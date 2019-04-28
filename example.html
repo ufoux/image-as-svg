@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image as SVG example</title>
+    <script src="https://s0.2mdn.net/ads/studio/cached_libs/tweenmax_1.19.0_643d6911392a3398cb1607993edabfa7_min.js"></script>
+    
+    <style type="text/css">
+        
+        body { margin: 0; background-color: gray; }
+        #main { width: 200px; height: 200px; position: absolute;}
+        
+    </style>
+</head>
+<body>
+
+<div id="main"></div>
+    
+    
+    
+<svg>
+    <defs id="defs_01">
+        <linearGradient id="linearGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:white; stop-opacity:0" />
+            <stop offset="50%" style="stop-color:white; stop-opacity:1" id="offsetStopGrad1" />
+            <stop offset="50%" style="stop-color:white; stop-opacity:1" id="offsetStopGrad2" />
+            <stop offset="100%" style="stop-color:white; stop-opacity:0" />
+        </linearGradient>
+        
+        <mask id="mask_01_wrap">
+            <rect id="mask_01" x="50%" y="0" width="0" height="100%" fill="url(#linearGrad)" />
+<!--            <text id="theText" x="20" y="100" font-family="DejaVu Serif" font-size="100" fill="white">MASK</text>-->
+        </mask>
+    </defs>
+</svg>
+    
+<script type="text/javascript">
+
+
+// ------------------------------ info ------------------------------ //
+// Callback is necessary in third argument, because we need wait for deletion "svg - defs" presets element in index. Otherwise, a duplicate ID will occur. If you are not using defs element, callback is not required because there is no duplicate ID.
+    
+
+window.onload = function() {
+
+// ------------------------------ ONE IMAGE ------------------------------ //    
+//    imageAsSvg("main","https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png", {callback: animation})
+
+
+// ------------------------------ ARRAY of IMAGES ------------------------------ //   
+//    imageAsSvg("main",[
+//        "https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png", "https://image.flaticon.com/icons/png/128/1256/1256661.png"
+//    ], {gOthers: 'mask="url(#mask_01_wrap)"', defsSrcId: defs_01, callback: animation})
+
+
+// ------------------------------ ARRAY of OBJECTS with IMAGES ------------------------------ // 
+    imageAsSvg("main",[
+        {
+            src: "https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png",
+            width: "200", height: "200"
+        },
+        {
+            src: "https://image.flaticon.com/icons/png/128/1256/1256661.png",
+            x: "30", y: "30"
+        },
+    ], {gOthers: 'mask="url(#mask_01_wrap)"', defsSrcId: defs_01, callback: animation})
+    
+
+    
+    
+    
+// ------------------------------ ANIMATION ------------------------------ //
+    function animation(){
+        var tl = new TimelineMax();
+            var maskTime = 1;
+            tl.to(mask_01, maskTime, {attr:{width: "110%", x: "-5%"}, repeat:-1, yoyo:true}, 0);
+            tl.to(offsetStopGrad1, maskTime, {attr:{offset: "5%"}, repeat:-1, yoyo:true}, 0);
+            tl.to(offsetStopGrad2, maskTime, {attr:{offset: "95%"}, repeat:-1, yoyo:true}, 0);
+    }
+}
+
+
+</script>
+
+<script src="image-as-svg.js"></script>
+
+</body>
+</html>
